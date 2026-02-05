@@ -36,6 +36,15 @@ import("private.action.utils", {alias = "action_utils"})
 -- run target
 function _do_run_target(target)
 
+    print("DEBUG: Checking winos support...")
+    if winos and winos.set_error_mode then
+        print("DEBUG: Calling SetErrorMode")
+        -- SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX | SEM_NOOPENFILEERRORBOX
+        winos.set_error_mode(0x0001 + 0x0002 + 0x8000)
+    else
+        print("DEBUG: winos not found or set_error_mode missing")
+    end
+
     -- only for binary program
     if not target:is_binary() then
         return
